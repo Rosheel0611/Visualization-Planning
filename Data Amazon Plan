@@ -8,3 +8,66 @@ From 2021 to 2022, Amazon Logistics’ package volume grew 6.25%.
 From 2018 to 2023, package volumes increased at a 49.1% compound annual growth rate (CAGR).
 
 Source: https://capitaloneshopping.com/research/amazon-logistics-statistics/
+
+
+P5.js code!!
+
+
+
+// Data based on CAGR (Compound Annual Growth Rate)
+let years = [2018, 2019, 2020, 2021, 2022, 2023];
+let packageVolumes = [];  // To store calculated volumes
+
+let initialVolume = 1;  // Assuming volume starts as 1 in 2018 (could be any starting value)
+let cagr = 0.491;  // 49.1% CAGR
+
+function setup() {
+  createCanvas(600, 400);
+  background(255);
+  
+  // Calculate the package volume for each year using CAGR
+  for (let i = 0; i < years.length; i++) {
+    let volume = initialVolume * Math.pow(1 + cagr, years[i] - 2018);  // Calculate for each year
+    packageVolumes.push(volume);
+  }
+  
+  // Call function to draw the graph
+  drawGraph(years, packageVolumes);
+}
+
+function drawGraph(years, volumes) {
+  let margin = 50;
+  let graphWidth = width - margin * 2;
+  let graphHeight = height - margin * 2;
+  
+  // Find max volume to scale the graph properly
+  let maxVolume = max(volumes);
+  
+  // Draw axes
+  stroke(0);
+  line(margin, margin, margin, height - margin);  // Y axis
+  line(margin, height - margin, width - margin, height - margin);  // X axis
+  
+  // Draw bars or points for each year
+  for (let i = 0; i < years.length; i++) {
+    let barHeight = map(volumes[i], 0, maxVolume, 0, graphHeight);  // Map volume to graph height
+    let x = margin + (i * graphWidth) / (years.length - 1);  // Calculate x position (even spacing)
+    let y = height - margin - barHeight;  // Calculate y position (inverted for canvas)
+
+    fill(100, 150, 255);  // Bar color
+    rect(x - 20, y, 40, barHeight);  // Draw the bar for each year
+    
+    // Add text labels for each year
+    fill(0);
+    textAlign(CENTER);
+    text(years[i], x, height - margin + 20);  // Display year below the bar
+  }
+  
+  // Add Y-axis label
+  textAlign(CENTER);
+  text('Package Volume (Scaled)', margin - 30, height / 2);  // Label on Y-axis
+  
+  // Add chart title
+  textAlign(CENTER);
+  text('Amazon Package Volume Growth (2018-2023)', width / 2, margin / 2);
+}
